@@ -1,4 +1,4 @@
-import {createElement} from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import {humanizeDate, standardizeDate, hasEventOffers} from '../utils';
 
 function createTripEventOffersTemplate(offers) {
@@ -66,24 +66,13 @@ function _createTemplate(data) {
   `;
 }
 
-export default class TripEventView {
+export default class TripEventView extends AbstractView {
   constructor({tripEvent}) {
+    super();
     this._tripEvent = tripEvent;
   }
 
-  getTemplate() {
+  get template() {
     return _createTemplate(this._tripEvent);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

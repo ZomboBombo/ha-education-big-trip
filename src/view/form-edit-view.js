@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import {createElement} from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import {hasEventOffers, getHashCode} from '../utils';
 
 const RE_ALL_SPECIAL_SYMBS = /[^\w\s]/g;
@@ -151,24 +151,13 @@ function _createTemplate(data) {
   `;
 }
 
-export default class FormEditView {
+export default class FormEditView extends AbstractView {
   constructor({formEditData}) {
+    super();
     this._formEditData = formEditData;
   }
 
-  getTemplate() {
+  get template() {
     return _createTemplate(this._formEditData);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

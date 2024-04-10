@@ -1,5 +1,5 @@
 // Utils
-import {render} from './render';
+import { render } from './framework/render';
 
 // Views
 import FiltersView from './view/filters-view';
