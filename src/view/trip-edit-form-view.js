@@ -1,10 +1,10 @@
 /* eslint-disable indent */
-import {createElement} from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import {hasEventOffers, getHashCode} from '../utils';
 
 const RE_ALL_SPECIAL_SYMBS = /[^\w\s]/g;
 
-function createFormEditOffersTemplate(offers) {
+function _createFormEditOffersTemplate(offers) {
   return (
     `${hasEventOffers(offers) ? `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -41,10 +41,10 @@ function _createTemplate(data) {
     destination
   } = data;
 
-  const formEditOffersTemp = createFormEditOffersTemplate(offers);
+  const formEditOffersTemp = _createFormEditOffersTemplate(offers);
 
   return `
-    <form class="event event--edit" action="#" method="post">
+    <form class="event event--edit" action="#" method="post" data-trip="edit-event-form">
       <header class="event__header">
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -151,24 +151,24 @@ function _createTemplate(data) {
   `;
 }
 
-export default class FormEditView {
-  constructor({formEditData}) {
-    this._formEditData = formEditData;
+export default class TripEditFormView extends AbstractView {
+  #formEditData = null;
+  #submitFormHandler = null;
+
+  constructor({formEditData, submitFormHandler}) {
+    super();
+    this.#formEditData = formEditData;
+    this.#submitFormHandler = submitFormHandler;
+
+    this.element.addEventListener('submit', this.#onFormSubmit);
   }
 
-  getTemplate() {
-    return _createTemplate(this._formEditData);
+  get template() {
+    return _createTemplate(this.#formEditData);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #onFormSubmit = (evt) => {
+    evt.preventDefault();
+    this.#submitFormHandler();
+  };
 }
