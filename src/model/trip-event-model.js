@@ -1,11 +1,11 @@
-import {getRandomTripEvent} from '../mock/trip-event-mock';
+import { getRandomTripEvent } from '../mock/trip-event-mock';
 
-const TE_COUNT = 4;
+const randomTripEventsLength = Math.floor(Math.random() * 10);
 
 export default class TripEventModel {
-  _tripEvents = Array.from({length: TE_COUNT}, getRandomTripEvent);
+  #tripEvents = Array.from({length: randomTripEventsLength}, getRandomTripEvent);
 
-  getTripEvents() {
-    return this._tripEvents;
+  get tripEvents() {
+    return this.#tripEvents;
   }
 }

@@ -4,11 +4,14 @@ import { render, replace } from '../framework/render';
 // Views
 import TripEventsListView from '../view/trip-events-list-view';
 import TripEventView from '../view/trip-event-view';
-import SortView from '../view/sort-view';
 import TripEditFormView from '../view/trip-edit-form-view';
+import SortView from '../view/sort-view';
+import EmptyPlaceholderView from '../view/empty-placeholder-view';
 
 export default class TripPresenter {
   #tripEventsListComponent = new TripEventsListView();
+  #emptyPlaceholder = new EmptyPlaceholderView();
+  #tripEvents = null;
   #container = null;
   #teModel = null;
   #feModel = null;
@@ -20,14 +23,8 @@ export default class TripPresenter {
   }
 
   init() {
-    this.tripEvents = [...this.#teModel.getTripEvents()];
-
-    render(this.#tripEventsListComponent, this.#container);
-    render(new SortView(), this.#tripEventsListComponent.element);
-
-    for (let i = 0; i < this.tripEvents.length; i++) {
-      this.#renderTripEvent(this.tripEvents[i]);
-    }
+    this.#tripEvents = [...this.#teModel.tripEvents];
+    this.#renderFullRoute();
   }
 
   #renderTripEvent(tripEvent) {
@@ -64,5 +61,17 @@ export default class TripPresenter {
     }
 
     render(tripEventComponent, this.#tripEventsListComponent.element);
+  }
+
+  #renderFullRoute() {
+    if (this.#tripEvents.length === 0) {
+      render(this.#emptyPlaceholder, this.#container);
+      return;
+    }
+
+    render(this.#tripEventsListComponent, this.#container);
+    render(new SortView(), this.#tripEventsListComponent.element);
+
+    this.#tripEvents.forEach((_, index) => this.#renderTripEvent(this.#tripEvents[index]));
   }
 }
