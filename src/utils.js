@@ -3,6 +3,22 @@ import dayjs from 'dayjs';
 const CNST_DATE_HUMAN_FORMAT = 'MMM DD';
 const CNST_DATE_STANDARD_FORMAT = 'YYYY-MM-DD';
 
+function humanizeDate(date) {
+  return date
+    ? dayjs(date).format(CNST_DATE_HUMAN_FORMAT)
+    : '';
+}
+
+function standardizeDate(date) {
+  return date
+    ? dayjs(date).format(CNST_DATE_STANDARD_FORMAT)
+    : '';
+}
+
+function hasEventOffers(teOffers) {
+  return Object.values(teOffers).some(Boolean);
+}
+
 function getRandomArrElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -23,22 +39,6 @@ function getRandomArrElement(arr) {
 */
 function getHashCode() {
   return Math.floor((Math.random() * 9000) + 999);
-}
-
-function humanizeDate(date) {
-  return date
-    ? dayjs(date).format(CNST_DATE_HUMAN_FORMAT)
-    : '';
-}
-
-function standardizeDate(date) {
-  return date
-    ? dayjs(date).format(CNST_DATE_STANDARD_FORMAT)
-    : '';
-}
-
-function hasEventOffers(teOffers) {
-  return Object.values(teOffers).some(Boolean);
 }
 
 export {
